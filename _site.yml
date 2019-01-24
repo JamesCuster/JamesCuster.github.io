@@ -1,7 +1,7 @@
-name: "my-website"
+name: "James Custer"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "James Custer"
   left:
     - text: "Home"
       href: index.html
