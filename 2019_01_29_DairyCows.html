@@ -196,7 +196,7 @@ $(document).ready(function () {
 </div><!--/.navbar -->
 <div class="row" style="margin-top: 20px">
   <div id="nav" class="col-xs-12 col-sm-3">
-    <div class="list-unstyled" style="min-width: 200px" data-spy="affix">
+    <div class="list-unstyled" style="min-width: 180px" data-spy="affix-top">
       <p>
         <a class="list-group-item" href="./TThome">Tidy Tuesday</a> 
         <a class="list-group-item" href="2019_01_29_DairyCows.html">01/29/2019 Dairy Cows</a>
@@ -212,6 +212,9 @@ $(document).ready(function () {
 </div>
 
 
+<div id="dairy-cows" class="section level1">
+<h1>Dairy Cows</h1>
+<p>Data for Tidy Tuesday this week comes from the United States Department of Agriculture. The data and code books can be found <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-29">here</a>. There are five different data sets provided, and I will only look at the milk products facts data set which tracks Americans annual consumption of various milk products.</p>
 <pre class="r"><code>library(tidyverse)
 library(cowplot)
 library(viridis)
@@ -232,8 +235,8 @@ MilkProductFactsTidy %&gt;%
        title = &quot;Average US Milk Product Consumption 1975-2017&quot;,
        color = &quot;Products&quot;) +
   theme(legend.title.align = .5)</code></pre>
-<p><img src="2019_01_29_DairyCows_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>There are so many different products in this graph that it is difficult to get a clear picture of what is going on, with the exception of the decline in fluid milk consumption. Fortunately if we look the names of the products they have a natrual grouping category of butter, cheese, dry, evaporated, fluid, and frozen. We can use these categories to hopefully get a clearer picture of what is happening.</p>
+<p><img src="images/2019_01_29_DairyCows/unnamed-chunk-2-1.png" width="672" /></p>
+<p>There are so many different products in this graph that it is difficult to get a clear picture of what is going on, with the exception of the decline in fluid milk consumption. Fortunately if we look the names of the products they have a natural grouping category of butter, cheese, dry, evaporated, fluid, and frozen. We can use these categories to hopefully get a clearer picture of what is happening.</p>
 <pre class="r"><code>MilkProductFactsCat &lt;- MilkProductFacts %&gt;% 
   gather(product, lbsPerPerson, -year) %&gt;%
   separate(product, c(&quot;category&quot;, &quot;product&quot;), sep = &quot;_&quot;, extra = &quot;merge&quot;, fill = &quot;right&quot;) %&gt;%
@@ -250,7 +253,7 @@ MilkProductFactsCat %&gt;%
        y = &quot;Pounds consumed per person&quot;,
        title = &quot;Average US Milk Product Consumption by Category 1975-2017&quot;,
        color = &quot;Category&quot;)</code></pre>
-<p><img src="2019_01_29_DairyCows_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="images/2019_01_29_DairyCows/unnamed-chunk-3-1.png" width="672" /></p>
 <p>This is much better, but again it is still difficult to see what is really going on in the plot since it is being dominated by the fluid category. Two potential solutions can be either show two plots one which includes fluid and one that excludes it, or plot each category on its own plot.</p>
 <pre class="r"><code>PlotWithFluid &lt;- MilkProductFactsCat %&gt;% 
   ggplot(aes(year, lbsPerPersonCat, color = category)) +
@@ -295,7 +298,7 @@ plot_grid(
   get_legend(PlotWithoutFluid),
   rel_widths = c(1.5, .5, 1.5, .5),
   ncol = 4)</code></pre>
-<p><img src="2019_01_29_DairyCows_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p><img src="images/2019_01_29_DairyCows/unnamed-chunk-4-1.png" width="960" /></p>
 <p>Alternatively we could look at each group individually.</p>
 <pre class="r"><code>MilkProductFactsCat %&gt;% 
   ggplot(aes(year, lbsPerPersonCat, color = category)) +
@@ -306,7 +309,7 @@ plot_grid(
        y = &quot;Pounds consumed per person&quot;,
        title = &quot;Average US Milk Product Consumption by Category 1975-2017&quot;,
        color = &quot;Category&quot;)</code></pre>
-<p><img src="2019_01_29_DairyCows_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="images/2019_01_29_DairyCows/unnamed-chunk-5-1.png" width="672" /></p>
 <p>This gives us a much better idea of what is going on within each category individually and the magnitude of the change in that category which is great, but it is difficult to see how a change of x amount in one category compares to another since they are on different scales. In order to do a comparison like this we need to get them on similar scales. I will use for each year the percent change from 1975 in order to achieve this.</p>
 <pre class="r"><code>MilkProductFactsCat %&gt;% 
   group_by(category) %&gt;% 
@@ -320,7 +323,7 @@ plot_grid(
        y = &quot;Percent Change&quot;,
        title = &quot;Percent Change in US Milk Consumption by Product Category Since 1975-2017&quot;,
        color = &quot;Category&quot;)</code></pre>
-<p><img src="2019_01_29_DairyCows_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="images/2019_01_29_DairyCows/unnamed-chunk-6-1.png" width="672" /></p>
 <p>In this plot we get a better idea of of how much the changes in each category compare relative to the others. As we can see the change in cheese consumption from 1975 to 2017 has increased by over 100%! The change in fluid milk consumption that seemed so large in previous graphs was only about a 35% decrease between 1975 and 2017. Another relationship that is easier to see here is that the dry and evaporated categories seem to be inversely related. Since this graph seems to be quite useful, we should look at a similar graph at the product level.</p>
 <pre class="r"><code>MilkProductFactsTidy &lt;- MilkProductFactsTidy %&gt;% 
   group_by(product) %&gt;% 
@@ -337,7 +340,7 @@ MilkProductFactsTidy %&gt;%
        y = &quot;Percent Change&quot;,
        title = &quot;Percent Change in US Milk Consumption by Product Since 1975-2017&quot;,
        color = &quot;Category&quot;)</code></pre>
-<p><img src="2019_01_29_DairyCows_files/figure-html/unnamed-chunk-7-1.png" width="672" /> This graph looks like it could be much more interesting than the very first one we looked at, but there is still so much going on it is difficult to see what is going on. Lets see if we can tease this out a little more by grouping the products into three groups, those with a decrease, relatively moderate increase, or large increases in consumption.</p>
+<p><img src="images/2019_01_29_DairyCows/unnamed-chunk-7-1.png" width="672" /> This graph looks like it could be much more interesting than the very first one we looked at, but there is still so much going on it is difficult to see what is going on. Lets see if we can tease this out a little more by grouping the products into three groups, those with a decrease, relatively moderate increase, or large increases in consumption.</p>
 <pre class="r"><code>MilkProductFactsTidy &lt;- MilkProductFactsTidy %&gt;%
   group_by(product) %&gt;% 
   mutate(changeCat = case_when(year == 2017 &amp; pctChange &lt; 0 ~ &quot;Decrease&quot;,
@@ -389,7 +392,8 @@ plot_grid(decreasePlot +
     get_legend(increasePlot), 
     ncol = 2, 
     align = &quot;v&quot;, axis = &quot;l&quot;)</code></pre>
-<p><img src="2019_01_29_DairyCows_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
+<p><img src="images/2019_01_29_DairyCows/unnamed-chunk-8-1.png" width="960" /></p>
+</div>
 
 
 

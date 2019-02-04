@@ -1,13 +1,16 @@
 ---
-Title: Dairy Cows
 output:
   html_document:
     includes:
       before_body: TTLayout.html
 ---
+# Dairy Cows
+
+Data for Tidy Tuesday this week comes from the United States Department of Agriculture. The data and code books can be found <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-29">here</a>. There are five different data sets provided, and I will only look at the milk products facts data set which tracks Americans annual consumption of various milk products. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.path = "images/2019_01_29_DairyCows/")
 ```
 
 ```{r, message=FALSE, warning=FALSE}
