@@ -5,6 +5,8 @@ navbar:
   left:
     - text: "Home"
       href: index.html
+    - text: "Tidy Tuesday"
+      href: TThome.html
 output:
   html_document:
     theme: sandstone
