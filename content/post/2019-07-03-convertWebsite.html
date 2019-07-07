@@ -1,0 +1,21 @@
+---
+title: 'Converting a Basic R Markdown Website to Blogdown'
+author: "James"
+date: '2019-07-02'
+modified: '2019-07-03'
+summary: "Converting a Website made with the R Markdown simple site generator using a bootswatch theme to a Blogdown website."
+slug: old-test
+
+categories:
+  - R
+  - R Markdown
+  - Blogdown
+  - R websites
+tags: []
+---
+
+
+
+<p>When I first discovered that it was possible to create a website using R Markdown’s built in site generator, I had not yet heard of blogdown. Using this great tutorial from <a href="https://www.emilyzabor.com/tutorials/rmarkdown_websites_tutorial.html">Emily C. Zabor</a> and the <a href="https://bookdown.org/yihui/rmarkdown">R Markdown: The Definitive Guide&gt;</a> by Yihui Xie, J. J. Allaire, and Garrett Grolemund, I set out on a seemingly ambitious effort to create my own personal website; this is something that I would never have envisioned myself doing. I do not have a background in software development at all, and most of my coding experience has surrounded statistical programming and machine learning in R and Python. Thanks to the great resources mentioned above it was a relatively simple task getting a website up and running. Soon I was starting to add some customization and using more elements of the <a href="https://bootswatch.com/sandstone">Bootswatch Sandstone</a> theme, admittedly with much help from my wonderful fiancé who is a software developer. Thanks, babe!</p>
+<p>Unfortunately, after a lot of work (for me at least) I started to realize that I was going to have some real issues with the flat directory that the basic R Markdown site generator assumes. I found some hacky ways to get around this feature, such as including new YAML files in sub-directories, but this was not a very good solution. I really liked the design of the website I had created and I didn’t want to just throw my work away and start anew. Thus this post. I started searching for ways to to convert my website from the simple R Markdown site to a blogdown website, but I found the resources for such a task wanting. So I set out with a little guidance and this blog post will chronicle that journey.</p>
+<p>Full disclaimer!! I am still by no means a software developer. I am not claiming that this is the way, or even the correct way, to go about this. This is just what I did in order to convert my website from R Markdown to blogdown while still using the Sandstone Bootswatch theme.</p>

@@ -1,0 +1,64 @@
+theme = "sandstone"
+baseURL = "http://jamescuster.github.io/"
+languageCode = "en-us"
+title = "James Custer"
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+
+# Used to create the left side of the navigation bar
+[[menu.main]]
+  name = "Projects"
+  identifier = "projects"
+  HasChildren = true
+  weight = 1
+  [[menu.main]]
+    parent = "projects"
+    name = "Sudoku Solver"
+    url = "/sudoku/sudoku_home/index.html"
+[[menu.main]]
+  name = "Tidy Tuesday"
+  url = "/tt/tthome/index.html"
+  weight = 2
+[[menu.main]]
+  name = "Blog"
+  url = "/post/index.html"
+  weight = 3
+
+
+[params]
+
+# Used to create the left most hyperlink for the page directs back to home page
+  [params.home]
+    name = "James Custer"
+    url = "/"
+
+# Used to create the right side of navigation bar
+  [[params.social]]
+    icon = "fa fa-envelope fa-lg"
+    href = "/contact/index.html"
+  [[params.social]]
+    name = "GitHub"
+    icon = "fa fa-github fa-lg"
+    href = "https://github.com/JamesCuster"
+  [[params.social]]
+    name = "Twitter"
+    icon = "fa fa-twitter fa-lg"
+    href = "https://twitter.com/Jamesguy_Inc"
+  [[params.social]]
+    name = "Linkedin"
+    icon = "fa fa-linkedin fa-lg"
+    href = "https://www.linkedin.com/in/jamescuster0121/"
+
+
+# used to create the Tidy Tuesday sidebar
+  [[params.tidyt]]
+    label = "Tidy Tuesday"
+    href = "/tt/tthome/index.html"
+  [[params.tidyt]]
+    label = "01/29/2019 Dairy Cows"
+    href = "/tt/2019_01_29_dairycows/index.html"
+    
+# used to create the sudoku solver sidebar
+  [[params.sudoku]]
+    label = "Sudoku Solver"
+    href = "/sudoku/sudoku_home/index.html"

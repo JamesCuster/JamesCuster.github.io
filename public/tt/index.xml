@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tts on James Custer</title>
+    <link>/tt/</link>
+    <description>Recent content in Tts on James Custer</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/tt/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Tidy Tuesday</title>
+      <link>/tt/2019_01_29_dairycows/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/tt/2019_01_29_dairycows/</guid>
+      <description>Dairy CowsData for Tidy Tuesday this week comes from the United States Department of Agriculture. The data and code books can be found here. There are five different data sets provided, and I will only look at the milk products facts data set which tracks Americans annual consumption of various milk products.
+library(tidyverse)library(cowplot)library(viridis)theme_set(theme_light())MilkProductFacts &amp;lt;- read_csv(&amp;quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-01-29/milk_products_facts.csv&amp;quot;)MilkProductFactsTidy &amp;lt;- MilkProductFacts %&amp;gt;% gather(product, lbsPerPerson, -year) %&amp;gt;%mutate(product = str_to_title(str_replace_all(product, &amp;quot;_&amp;quot;, &amp;quot; &amp;quot;)))MilkProductFactsTidy %&amp;gt;% ggplot(aes(year, lbsPerPerson, color = product)) +geom_line(size = 1) +scale_colour_viridis_d() + labs(x = &amp;quot;Year&amp;quot;,y = &amp;quot;Pounds consumed per person&amp;quot;,title = &amp;quot;Average US Milk Product Consumption 1975-2017&amp;quot;,color = &amp;quot;Products&amp;quot;) +theme(legend.</description>
+    </item>
+    
+    <item>
+      <title>Tidy Tuesday</title>
+      <link>/tt/tthome/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/tt/tthome/</guid>
+      <description>Tidy Tuesday is a weekly event put on by the R for Data Science online learning community. Each week they release one or more data sets to give individuals the opportunity to practice data wrangling and visualization skills. This is where I will chronicle my Tidy Tuesday endeavors. If you are more interested in in the event you can visit the Tidy Tuesday GitHub page.</description>
+    </item>
+    
+  </channel>
+</rss>

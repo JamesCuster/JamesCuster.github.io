@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1562534214026.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "981491831",
+    "id" : "8A0B0340",
+    "lastKnownWriteTime" : 1561846509,
+    "last_content_update" : 1561846509,
+    "path" : "~/R Projects/convertWebsite/content/_index.Rmd",
+    "project_path" : "content/_index.Rmd",
+    "properties" : {
+        "cursorPosition" : "7,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

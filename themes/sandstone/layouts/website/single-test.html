@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode }}">
+  <head>
+    {{ partial "head.html" . }}
+    
+  </head>
+  <body>
+    <div class="container-fluid main-container">
+      {{ partial "dynamicNav.html" . }}
+      {{ partial "tt_sidebar.html" . }}
+      
+      <main class="content" role="main">
+        <article class="article">
+          <h1 class="article-title">{{ .Title }}</h1>
+          <div class="article-content">
+            {{ .Content }}
+          </div>
+        </article>
+        {{ partial "disqus.html" .}}
+      </main>
+      
+      {{ partial "footer.html" . }}
+    </div>
+  </body>
+</html>

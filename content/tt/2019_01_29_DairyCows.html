@@ -1,0 +1,190 @@
+---
+title: Tidy Tuesday
+type: "website"
+layout: "tt"
+---
+
+
+
+<div id="dairy-cows" class="section level2">
+<h2>Dairy Cows</h2>
+<p>Data for Tidy Tuesday this week comes from the United States Department of Agriculture. The data and code books can be found <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-29">here</a>. There are five different data sets provided, and I will only look at the milk products facts data set which tracks Americans annual consumption of various milk products.</p>
+<pre class="r"><code>library(tidyverse)
+library(cowplot)
+library(viridis)
+theme_set(theme_light())
+
+MilkProductFacts &lt;- 
+  read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-01-29/milk_products_facts.csv&quot;)</code></pre>
+<pre class="r"><code>MilkProductFactsTidy &lt;- MilkProductFacts %&gt;% 
+  gather(product, lbsPerPerson, -year) %&gt;%
+  mutate(product = str_to_title(str_replace_all(product, &quot;_&quot;, &quot; &quot;)))
+
+MilkProductFactsTidy %&gt;% 
+  ggplot(aes(year, lbsPerPerson, color = product)) +
+  geom_line(size = 1) +
+  scale_colour_viridis_d() + 
+  labs(x = &quot;Year&quot;,
+       y = &quot;Pounds consumed per person&quot;,
+       title = &quot;Average US Milk Product Consumption 1975-2017&quot;,
+       color = &quot;Products&quot;) +
+  theme(legend.title.align = .5)</code></pre>
+<p><img src="/tt/2019_01_29_DairyCows_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>There are so many different products in this graph that it is difficult to get a clear picture of what is going on, with the exception of the decline in fluid milk consumption. Fortunately if we look the names of the products they have a natural grouping category of butter, cheese, dry, evaporated, fluid, and frozen. We can use these categories to hopefully get a clearer picture of what is happening.</p>
+<pre class="r"><code>MilkProductFactsCat &lt;- MilkProductFacts %&gt;% 
+  gather(product, lbsPerPerson, -year) %&gt;%
+  separate(product, c(&quot;category&quot;, &quot;product&quot;), sep = &quot;_&quot;, extra = &quot;merge&quot;, fill = &quot;right&quot;) %&gt;%
+  mutate(product = ifelse(is.na(product), category, product)) %&gt;% 
+  group_by(category, year) %&gt;% 
+  summarize(lbsPerPersonCat = sum(lbsPerPerson)) %&gt;% 
+  ungroup()
+
+MilkProductFactsCat %&gt;% 
+  ggplot(aes(year, lbsPerPersonCat, color = category)) +
+  geom_line(size = 1) +
+  scale_colour_viridis_d() + 
+    labs(x = &quot;Year&quot;,
+       y = &quot;Pounds consumed per person&quot;,
+       title = &quot;Average US Milk Product Consumption by Category 1975-2017&quot;,
+       color = &quot;Category&quot;)</code></pre>
+<p><img src="/tt/2019_01_29_DairyCows_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>This is much better, but again it is still difficult to see what is really going on in the plot since it is being dominated by the fluid category. Two potential solutions can be either show two plots one which includes fluid and one that excludes it, or plot each category on its own plot.</p>
+<pre class="r"><code>PlotWithFluid &lt;- MilkProductFactsCat %&gt;% 
+  ggplot(aes(year, lbsPerPersonCat, color = category)) +
+  geom_line(size = 1) +
+  scale_colour_viridis_d() +
+  labs(x = &quot;Year&quot;,
+       y = &quot;Pounds consumed per person&quot;,
+       title = paste(strwrap(&quot;Average US Milk Product Consumption by Category 1975-2017&quot;
+                             , width = 36), 
+                     collapse = &quot;\n&quot;),
+       subtitle = &quot;Including Fluid Products&quot;,
+       color = &quot;Category&quot;)
+
+# PlotWithoutFluid &lt;- MilkProductFacts %&gt;% 
+#   gather(product, lbsPerPerson, -year) %&gt;%
+#   separate(product, c(&quot;category&quot;, &quot;product&quot;), sep = &quot;_&quot;, extra = &quot;merge&quot;, fill = &quot;right&quot;) %&gt;%
+#   mutate(product = ifelse(is.na(product), category, product)) %&gt;%
+#   filter(category != &quot;fluid&quot;) %&gt;% 
+#   group_by(category, year) %&gt;% 
+#   summarize(lbsPerPersonCat = sum(lbsPerPerson)) %&gt;% 
+PlotWithoutFluid &lt;- MilkProductFactsCat %&gt;% 
+  filter(category != &quot;fluid&quot;) %&gt;% 
+  ggplot(aes(year, lbsPerPersonCat, color = category)) +
+  geom_line(size = 1) +
+  scale_colour_viridis_d() + 
+  labs(x = &quot;Year&quot;,
+       y = &quot;Pounds consumed per person&quot;,
+       title = paste(strwrap(&quot;Average US Milk Product Consumption by Category 1975-2017&quot;
+                             , width = 36), 
+                     collapse = &quot;\n&quot;),
+       subtitle = &quot;Excluding Fluid Products&quot;,
+       color = &quot;Category&quot;)
+
+plot_grid(
+  PlotWithFluid + 
+    theme(legend.position=&quot;none&quot;, 
+          plot.title = element_text(size=12)),
+  get_legend(PlotWithFluid),
+  PlotWithoutFluid + 
+    theme(legend.position=&quot;none&quot;, 
+          plot.title = element_text(size=12)),
+  get_legend(PlotWithoutFluid),
+  rel_widths = c(1.5, .5, 1.5, .5),
+  ncol = 4)</code></pre>
+<p><img src="/tt/2019_01_29_DairyCows_files/figure-html/unnamed-chunk-4-1.png" width="960" /></p>
+<p>Alternatively we could look at each group individually.</p>
+<pre class="r"><code>MilkProductFactsCat %&gt;% 
+  ggplot(aes(year, lbsPerPersonCat, color = category)) +
+  geom_line(size = 1) +
+  scale_colour_viridis_d() +
+  facet_wrap(~category, scales = &quot;free&quot;) + 
+    labs(x = &quot;Year&quot;,
+       y = &quot;Pounds consumed per person&quot;,
+       title = &quot;Average US Milk Product Consumption by Category 1975-2017&quot;,
+       color = &quot;Category&quot;)</code></pre>
+<p><img src="/tt/2019_01_29_DairyCows_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>This gives us a much better idea of what is going on within each category individually and the magnitude of the change in that category which is great, but it is difficult to see how a change of x amount in one category compares to another since they are on different scales. In order to do a comparison like this we need to get them on similar scales. I will use for each year the percent change from 1975 in order to achieve this.</p>
+<pre class="r"><code>MilkProductFactsCat %&gt;% 
+  group_by(category) %&gt;% 
+  mutate(refYear = ifelse(year == 1975, lbsPerPersonCat, NA)) %&gt;% 
+  fill(refYear) %&gt;%
+  mutate(pctChange = (lbsPerPersonCat - refYear) / refYear * 100) %&gt;%
+  ggplot(aes(year, pctChange, color = category)) + 
+  geom_line(size = 1) +
+  scale_colour_viridis_d() + 
+  labs(x = &quot;Year&quot;,
+       y = &quot;Percent Change&quot;,
+       title = &quot;Percent Change in US Milk Consumption by Product Category Since 1975-2017&quot;,
+       color = &quot;Category&quot;)</code></pre>
+<p><img src="/tt/2019_01_29_DairyCows_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>In this plot we get a better idea of of how much the changes in each category compare relative to the others. As we can see the change in cheese consumption from 1975 to 2017 has increased by over 100%! The change in fluid milk consumption that seemed so large in previous graphs was only about a 35% decrease between 1975 and 2017. Another relationship that is easier to see here is that the dry and evaporated categories seem to be inversely related. Since this graph seems to be quite useful, we should look at a similar graph at the product level.</p>
+<pre class="r"><code>MilkProductFactsTidy &lt;- MilkProductFactsTidy %&gt;% 
+  group_by(product) %&gt;% 
+  mutate(refYear = ifelse(year == 1975, lbsPerPerson, NA)) %&gt;% 
+  fill(refYear) %&gt;%
+  mutate(pctChange = (lbsPerPerson - refYear) / refYear * 100) %&gt;% 
+  ungroup()
+
+MilkProductFactsTidy %&gt;% 
+  ggplot(aes(year, pctChange, color = product)) + 
+  geom_line(size = 1) +
+  scale_colour_viridis_d() + 
+  labs(x = &quot;Year&quot;,
+       y = &quot;Percent Change&quot;,
+       title = &quot;Percent Change in US Milk Consumption by Product Since 1975-2017&quot;,
+       color = &quot;Category&quot;)</code></pre>
+<p><img src="/tt/2019_01_29_DairyCows_files/figure-html/unnamed-chunk-7-1.png" width="672" /> This graph looks like it could be much more interesting than the very first one we looked at, but there is still so much going on it is difficult to see what is going on. Lets see if we can tease this out a little more by grouping the products into three groups, those with a decrease, relatively moderate increase, or large increases in consumption.</p>
+<pre class="r"><code>MilkProductFactsTidy &lt;- MilkProductFactsTidy %&gt;%
+  group_by(product) %&gt;% 
+  mutate(changeCat = case_when(year == 2017 &amp; pctChange &lt; 0 ~ &quot;Decrease&quot;,
+                               year == 2017 &amp; between(pctChange, 0, 100) ~ &quot;Moderate Increase&quot;,
+                               year == 2017 &amp; pctChange &gt; 100 ~ &quot;Increase&quot;)) %&gt;% 
+  fill(changeCat, .direction = &quot;up&quot;)
+
+decreasePlot &lt;- MilkProductFactsTidy %&gt;% 
+  filter(changeCat == &quot;Decrease&quot;) %&gt;% 
+  ggplot(aes(year, pctChange, color = product)) + 
+  geom_line(size = 1) +
+  scale_colour_viridis_d() + 
+  facet_wrap(~changeCat, scales = &quot;free&quot;) + 
+  labs(x = &quot;Year&quot;,
+       y = &quot;Percent Change&quot;,
+       title = &quot;Percent Change in US Milk Consumption by Product Since 1975-2017&quot;,
+       color = &quot;Category&quot;)
+
+mIncreasePlot &lt;- MilkProductFactsTidy %&gt;% 
+  filter(changeCat == &quot;Moderate Increase&quot;) %&gt;% 
+  ggplot(aes(year, pctChange, color = product)) + 
+  geom_line(size = 1) +
+  scale_colour_viridis_d() + 
+  facet_wrap(~changeCat, scales = &quot;free&quot;) + 
+  labs(x = &quot;Year&quot;,
+       y = &quot;Percent Change&quot;,
+       title = &quot;Percent Change in US Milk Consumption by Product Since 1975-2017&quot;,
+       color = &quot;Category&quot;)
+
+increasePlot &lt;- MilkProductFactsTidy %&gt;% 
+  filter(changeCat == &quot;Increase&quot;) %&gt;% 
+  ggplot(aes(year, pctChange, color = product)) + 
+  geom_line(size = 1) +
+  scale_colour_viridis_d() + 
+  facet_wrap(~changeCat, scales = &quot;free&quot;) + 
+  labs(x = &quot;Year&quot;,
+       y = &quot;Percent Change&quot;,
+       title = &quot;Percent Change in US Milk Consumption by Product Since 1975-2017&quot;,
+       color = &quot;Category&quot;)
+
+plot_grid(decreasePlot + 
+    theme(legend.position=&quot;none&quot;), 
+    get_legend(decreasePlot),
+    mIncreasePlot + 
+    theme(legend.position=&quot;none&quot;), 
+    get_legend(mIncreasePlot), 
+    increasePlot + 
+    theme(legend.position=&quot;none&quot;), 
+    get_legend(increasePlot), 
+    ncol = 2, 
+    align = &quot;v&quot;, axis = &quot;l&quot;)</code></pre>
+<p><img src="/tt/2019_01_29_DairyCows_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
+</div>
