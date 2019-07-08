@@ -13,10 +13,10 @@
     
     <item>
       <title>Converting a Basic R Markdown Website to Blogdown</title>
-      <link>/post/old-test/</link>
+      <link>/post/2019-07-03-convertwebsite/</link>
       <pubDate>Tue, 02 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>/post/old-test/</guid>
+      <guid>/post/2019-07-03-convertwebsite/</guid>
       <description>When I first discovered that it was possible to create a website using R Markdown’s built in site generator, I had not yet heard of blogdown. Using this great tutorial from Emily C. Zabor and the R Markdown: The Definitive Guide&amp;gt; by Yihui Xie, J. J. Allaire, and Garrett Grolemund, I set out on a seemingly ambitious effort to create my own personal website; this is something that I would never have envisioned myself doing.</description>
     </item>
     

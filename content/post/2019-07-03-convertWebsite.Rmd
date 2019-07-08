@@ -4,7 +4,6 @@ author: "James"
 date: '2019-07-02'
 modified: '2019-07-03'
 summary: "Converting a Website made with the R Markdown simple site generator using a bootswatch theme to a Blogdown website."
-slug: old-test
 
 categories:
   - R
