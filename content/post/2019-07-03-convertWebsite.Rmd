@@ -23,6 +23,8 @@ Full disclaimer!! I am still by no means a software developer. I am not claiming
 First things first, I created a new Rstudio project and selected the blogdown website option. I accepted the default settings which will provide you with a pre-built website using hugo-lithium theme which I used to serve as the bones for my site. Next I renamed the hugo-lithium file under the themes directory to sandstone and changed this setting in the config file as well. 
 
 
+This is a test of the netlify
+
 # Add sandstone theme into a theme
 # modify partials
   # use old site header
