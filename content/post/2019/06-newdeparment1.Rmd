@@ -4,6 +4,7 @@ author: "James Custer"
 date: 2019-06-17
 categories: ["R"]
 tags: ["R Markdown", "testing", "development"]
+slug: newdepartment
 ---
 
 I want to test this as a post

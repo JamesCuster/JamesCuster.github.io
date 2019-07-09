@@ -11,6 +11,7 @@ categories:
   - Blogdown
   - R websites
 tags: []
+slug: converttoblogdown
 ---
 
 When I first discovered that it was possible to create a website using R Markdown's built in site generator, I had not yet heard of blogdown. Using this great tutorial from <a href="https://www.emilyzabor.com/tutorials/rmarkdown_websites_tutorial.html">Emily C. Zabor</a> and the <a href="https://bookdown.org/yihui/rmarkdown">R Markdown: The Definitive Guide></a> by Yihui Xie, J. J. Allaire, and Garrett Grolemund, I set out on a seemingly ambitious effort to create my own personal website; this is something that I would never have envisioned myself doing. I do not have a background in software development at all, and most of my coding experience has surrounded statistical programming and machine learning in R and Python. Thanks to the great resources mentioned above it was a relatively simple task getting a website up and running. Soon I was starting to add some customization and using more elements of the <a href="https://bootswatch.com/sandstone">Bootswatch Sandstone</a> theme,  admittedly with much help from my wonderful fianc&eacute; who is a software developer. Thanks, babe!
