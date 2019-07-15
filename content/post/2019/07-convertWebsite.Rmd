@@ -18,12 +18,41 @@ When I first discovered that it was possible to create a website using R Markdow
 
 Unfortunately, after a lot of work (for me at least) I started to realize that I was going to have some real issues with the flat directory that the basic R Markdown site generator assumes. I found some hacky ways to get around this feature, such as including new YAML files in sub-directories, but this was not a very good solution. Additionally, I knew that I was going to want to add this blog to the site, but I really liked the design of the website I had created and I didn't want to just throw my work away and start anew. Thus this post. I started searching for ways to to convert my website from the simple R Markdown site to a blogdown website, but I found the resources for such a task wanting. So I set out with a little guidance and this blog post will chronicle that journey. 
 
-Full disclaimer!! I am still by no means a software developer. I am not claiming that this is the correct way, or even a good way to go about this. This is just what I did in order to convert my website from R Markdown to blogdown while still using the Sandstone Bootswatch theme, and it is working fine for me thus far. This <a href="http://whipperstacker.com/2016/09/22/convert-an-existing-site-into-hugo/">blog post</a> was a great starting point for me as it heplped me to understand the inner workings of a Hugo theme a little better. However, it did not allow me to manage the website from the config.toml file how I wanted to. 
+Full disclaimer!! I am still by no means a software developer. I am not claiming that this is the correct way, or even a good way to go about this. This is just what I did in order to convert my website from R Markdown to blogdown while still using the Sandstone Bootswatch theme, and it is working fine for me thus far. This <a href="http://whipperstacker.com/2016/09/22/convert-an-existing-site-into-hugo/">blog post</a> was a great starting point for me as it heplped me to understand the inner workings of a Hugo theme a little better. However, it did not allow me to manage the website from the config.toml file how I wanted, and I wanted to add a blog.
 
-First things first, I created a new Rstudio project and selected the blogdown website option. I accepted the default settings which will provide you with a pre-built website using hugo-lithium theme which I used to serve as the bones for my site. Next I renamed the hugo-lithium file under the themes directory to sandstone and changed this setting in the config file as well. 
+First things first; I created a new Rstudio project and selected the blogdown website option. I accepted the default settings which will provide a pre-built website using hugo-lithium theme, which I used to serve as the bones for my site. Next I renamed the hugo-lithium file under the themes directory to sandstone (to match the bootswatch theme) and changed this setting in the config file as well. 
+
+Next we are going into the inner workings of the old R Markdown website. We need to get all of the css, JavaScript, etc., that made the R Markdown website work. Copy the site_libs directory from the R Markdown website directory into the the "themes/NAME_OF_THEME/static" directory in the blogdown website directory. After this I moved all of my .Rmd files from the old website into the content folder of the new website, The _index.RMD file is the only file that I left directly in the contents directory, all others a created subdirectories for within (if you have images embedded in your page you will also need to move them into the contents folder and update their paths within your files). If you build the blogdown website at this point the content of the homepage should be the same as the old R Markdown website, however, it will not look the same yet because it is not interacting with the correct CSS and JavaScript files. So the next steps will be to allow this interaction as well as integrate with Hugo. 
+
+We will need to modify or create new "partials" within the theme which will use the CSS and JavaScript from the old website. In order to get the code for this opened the index.html code for the old website and copied this:
+
+
+{{< gist JamesCuster 2b1a27b8cf4edb88687791c6008678ed "cssjsPathOld.html" >}}
+
+<!--
+<script src="https://gist.github.com/JamesCuster/2b1a27b8cf4edb88687791c6008678ed#file-cssjspathnew.js"></script>
+
+#<script src="https://gist.github.com/JamesCuster/2b1a27b8cf4edb88687791c6008678ed.js"></script>
+-->
+
+and I placed in in the ..... file here.
+
+
+
+
+Naviagate the the "themes/NAME_OF_THEME/layouts" directory. 
+
+The first thing I tackled was the navigation bar. I created a new HTML file, and to start with I copied the navigation bar HTML code from the old website 
+
 
 
 This is a test of the netlify
+
+
+<script src="https://gist.github.com/JamesCuster/c77dcbe06d831cb7a2babfa9382da54a.js"></script>
+
+
+
 
 # Add sandstone theme into a theme
 # modify partials
