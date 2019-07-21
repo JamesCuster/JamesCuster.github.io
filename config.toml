@@ -1,5 +1,5 @@
 theme = "sandstone"
-baseURL = "http://jamescuster.github.io/"
+baseURL = "https://jamescuster.netlify.com/"
 languageCode = "en-us"
 title = "James Custer"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
@@ -16,14 +16,14 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   [[menu.main]]
     parent = "projects"
     name = "Sudoku Solver"
-    url = "/sudoku/sudoku_home/index.html"
+    url = "/sudoku/sudoku_home/"
 [[menu.main]]
   name = "Tidy Tuesday"
-  url = "/tt/tthome/index.html"
+  url = "/tt/tthome/"
   weight = 2
 [[menu.main]]
   name = "Blog"
-  url = "/post/index.html"
+  url = "/post/"
   weight = 3
 
 
@@ -37,7 +37,7 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 # Used to create the right side of navigation bar
   [[params.social]]
     icon = "fa fa-envelope fa-lg"
-    href = "/contact/index.html"
+    href = "/contact/"
   [[params.social]]
     name = "GitHub"
     icon = "fa fa-github fa-lg"
@@ -55,12 +55,12 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 # used to create the Tidy Tuesday sidebar
   [[params.tidyt]]
     label = "Tidy Tuesday"
-    href = "/tt/tthome/index.html"
+    href = "/tt/tthome/"
   [[params.tidyt]]
     label = "01/29/2019 Dairy Cows"
-    href = "/tt/2019_01_29_dairycows/index.html"
+    href = "/tt/2019_01_29_dairycows/"
     
 # used to create the sudoku solver sidebar
   [[params.sudoku]]
     label = "Sudoku Solver"
-    href = "/sudoku/sudoku_home/index.html"
+    href = "/sudoku/sudoku_home/"
