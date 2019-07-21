@@ -1,8 +1,8 @@
 ---
 title: 'Converting a Basic R Markdown Website to Blogdown'
 author: "James"
-date: '2019-07-02'
-modified: '2019-07-03'
+date: '2019-07-20'
+modified: '2019-07-20'
 summary: "Converting a Website made with the R Markdown simple site generator using a bootswatch theme to a Blogdown website."
 
 categories:
@@ -14,50 +14,74 @@ tags: []
 slug: converttoblogdown
 ---
 
-When I first discovered that it was possible to create a website using R Markdown's built in site generator, I had not yet heard of blogdown. Using this great tutorial from <a href="https://www.emilyzabor.com/tutorials/rmarkdown_websites_tutorial.html">Emily C. Zabor</a> and the <a href="https://bookdown.org/yihui/rmarkdown">R Markdown: The Definitive Guide></a> by Yihui Xie, J. J. Allaire, and Garrett Grolemund, I set out on a seemingly ambitious effort to create my own personal website; this is something that I would never have envisioned myself doing. I do not have a background in software development at all, and most of my coding experience has surrounded statistical programming and machine learning in R and Python. Thanks to the great resources mentioned above it was a relatively simple task getting a website up and running. Soon I was starting to add some customization and using more elements of the <a href="https://bootswatch.com/sandstone">Bootswatch Sandstone</a> theme,  admittedly with much help from my wonderful fianc&eacute; who is a software developer. Thanks, babe!
+When I first discovered that it was possible to create a website using R Markdown's built in site generator, I had not yet heard of blogdown. Using this great tutorial from <a href="https://www.emilyzabor.com/tutorials/rmarkdown_websites_tutorial.html">Emily C. Zabor</a> and the <a href="https://bookdown.org/yihui/rmarkdown">R Markdown: The Definitive Guide</a> by Yihui Xie, J. J. Allaire, and Garrett Grolemund, I set out on a seemingly ambitious effort to create my own personal website; this is something that I would never have envisioned myself doing. I do not have a background in software development at all, and most of my coding experience has surrounded statistical programming and machine learning in R and Python. Thanks to the great resources mentioned above it was a relatively simple task getting a website up and running. Soon I was starting to add some customization and using more elements of the <a href="https://bootswatch.com/sandstone">Bootswatch Sandstone</a> theme,  admittedly with much help from my wonderful fianc&eacute; who is a software developer. Thanks, babe!
 
 Unfortunately, after a lot of work (for me at least) I started to realize that I was going to have some real issues with the flat directory that the basic R Markdown site generator assumes. I found some hacky ways to get around this feature, such as including new YAML files in sub-directories, but this was not a very good solution. Additionally, I knew that I was going to want to add this blog to the site, but I really liked the design of the website I had created and I didn't want to just throw my work away and start anew. Thus this post. I started searching for ways to to convert my website from the simple R Markdown site to a blogdown website, but I found the resources for such a task wanting. So I set out with a little guidance and this blog post will chronicle that journey. 
 
 Full disclaimer!! I am still by no means a software developer. I am not claiming that this is the correct way, or even a good way to go about this. This is just what I did in order to convert my website from R Markdown to blogdown while still using the Sandstone Bootswatch theme, and it is working fine for me thus far. This <a href="http://whipperstacker.com/2016/09/22/convert-an-existing-site-into-hugo/">blog post</a> was a great starting point for me as it heplped me to understand the inner workings of a Hugo theme a little better. However, it did not allow me to manage the website from the config.toml file how I wanted, and I wanted to add a blog.
 
+
+
+First we will focus just on getting all of the content over to the new website and making sure that it all looks the same as it did originally, then we will work on modifying the code to integrate it with Hugo and Blogdown.
+
+
+
+
 First things first; I created a new Rstudio project and selected the blogdown website option. I accepted the default settings which will provide a pre-built website using hugo-lithium theme, which I used to serve as the bones for my site. Next I renamed the hugo-lithium file under the themes directory to sandstone (to match the bootswatch theme) and changed this setting in the config file as well. 
 
 Next we are going into the inner workings of the old R Markdown website. We need to get all of the css, JavaScript, etc., that made the R Markdown website work. Copy the site_libs directory from the R Markdown website directory into the the "themes/NAME_OF_THEME/static" directory in the blogdown website directory. After this I moved all of my .Rmd files from the old website into the content folder of the new website, The _index.RMD file is the only file that I left directly in the contents directory, all others a created subdirectories for within (if you have images embedded in your page you will also need to move them into the contents folder and update their paths within your files). If you build the blogdown website at this point the content of the homepage should be the same as the old R Markdown website, however, it will not look the same yet because it is not interacting with the correct CSS and JavaScript files. So the next steps will be to allow this interaction as well as integrate with Hugo. 
 
-We will need to modify or create new "partials" within the theme which will use the CSS and JavaScript from the old website. In order to get the code for this opened the index.html code for the old website and copied this:
+We will need to modify or create new "partials" within the theme which will use the CSS and JavaScript from the old website. The first partial to edit will be the head.html. We want to add the CSS, JavaScript, and html style and script tags so that the website knows were to find the  information it needs. To find this information I opened the index.html file for the old website and looked inside the head tag. This is what mine looked like.
+
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "headDivOld.html">}}
+
+You don't need to worry about the contents of what is in here, just know that I copied lines 12-256 and pasted them into the head.html partial starting at line 36 which you can see below. <b>IMPORTNAT NOTE: notice for the tags on lines 36-46 that have a reference path a "/" needed to be added to the front of the path so that they can be located by the website once it is built!</b> Second note, since I was adding a blog to my website, I did not remove any of the CSS or JavaScript that came with the Hugo Lithum theme. 
+
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "partialHead.html">}}
+
+The next partial to edit is the header.html partial, which looked like this originally.
+
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "headerOriginal.html">}}
+
+There are two things to change here. First, is to remove the header tag. Second, is the class of the first div within the body tag. In order to figure out what it should be open the index.html code from the old website, navigate to the body tag and look for the class of the first div. In my case this looked like this:
+
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "bodyDivOld.html">}} 
+
+So that my hew header.html partial looks like this. 
+
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "partialHeader.html">}} 
 
 
-{{< gist JamesCuster 2b1a27b8cf4edb88687791c6008678ed "cssjsPathOld.html" >}}
+Thus, I changed the class from "wrapper" to "container-fluid main-container". This is the only thing that needs to be changed in this file. The Next thing to tackle is adding the navigation bar from the old website. Again I pulled this information from the index.html file of the old website which started just inside the "container-fluid main-container" div of the body. Mine looked like this.
 
-<!--
-<script src="https://gist.github.com/JamesCuster/2b1a27b8cf4edb88687791c6008678ed#file-cssjspathnew.js"></script>
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "navbarOld.html">}} 
 
-#<script src="https://gist.github.com/JamesCuster/2b1a27b8cf4edb88687791c6008678ed.js"></script>
--->
+The last partial that I modified was the footer.html file. I just deleted everything from this footer, which as I am writing this I realize that maybe I should not have done since there were some other partials embedded there, however, I have not seen any negative impacts or things missing yet. I may go back and add some of this code back in the future though. 
 
-and I placed in in the ..... file here.
+Now that all of the partials are set up we can create the layouts that we want the webpages to use. Again, since I was adding a blog I wanted to keep the layouts that were already in the theme so in the themes/sandstone/layouts directory I created a subdirectory called website. In here a created a new html file called single.html with the following contents. 
 
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "layoutSingle.html">}} 
 
+Now in order to use this new layout we need to modify the ymal headers of the RMarkdown files in the following way.
 
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "ymlNew.html">}} 
 
-Naviagate the the "themes/NAME_OF_THEME/layouts" directory. 
+Once you have added this to all of the yml headers in your RMarkdown files and build the site all of your conent should be available and look as it did on the old website. However, since Blogdown/Hugo uses a different directory style, all of the old href's will no longer work. The public directory will now serve as the root directory for your website and any of the RMarkdown files that you have in the content folder will be knitted and the html added into the public/content directory. The hrefs should be updated to reflect this. If you complete this step then your website should be fully functioning as the old one did. However, you can't enjoy the full benefits of the Hugo/Blogdown pair until you take a few more steps. We want to add code into the partials again, which will read information from the config.toml file and automatically do things like add new content to the navbar and such. 
 
-The first thing I tackled was the navigation bar. I created a new HTML file, and to start with I copied the navigation bar HTML code from the old website 
+Please note, that this is where some thing may be differnt for you than they are me depending on your website, so all the things that I do might not be applicable, or you might need to do something different from what I have. The first thing that I did was go into the config.toml file, which orginally looked like this.
 
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "configOld.html">}}
 
+and now it looks like this. 
 
-This is a test of the netlify
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "configNew.html">}} 
 
+I don't know if I possibly took out something that I needed from the original, so I might eventually add something back in, but it looks like it is working for now. I think for the most part it's pretty clear what is going on in the config file, so I wont go into much detail. Under the "Used to create the left side of the navigation bar" comment you will notice the HasChildern argument under the first menu.main and parent under the second one. This is what tells Hugo that you have a nested dropdown menu. You will also notice the weight argument for the menu.main's which is what allows me to specifically control the order they are displayed.
 
-<script src="https://gist.github.com/JamesCuster/c77dcbe06d831cb7a2babfa9382da54a.js"></script>
+Now back to the nav.html partial. In order to modify this I actually created a new partial, dynamicnav.html, so that I could reference the original as I was creating this new partial. If you do this as well make sure to modify the header.html to reference to the correct navigation bar partial. The navbar is created using for loops in Hugo, doing so turned the partial controlling my navbar from what was shown above to this. 
 
+{{<gist jamescuster 2b1a27b8cf4edb88687791c6008678ed "dynamicnav.html">}} 
 
+The first change in the new navbar is line 11. The {{- .Site.Params.home.url }} and {{- .Site.Params.home.name }} lines tell Hugo to look in the config file for the [[params.home]] and use the url and name. The other changes in this file work similarly. In the new navbar partial lines 16-37 replace lines 12-19. I also forgot to mention that I added some new content to the site while I was in the middle of this process, so there are more items in the new navigation bar than the old one. The Hugo code here can be read just like a for loop. So Hugo looks into the config file for menu.main variables first it checks if that menu.main has children, if so it uses lines 19-23, then for each child menu.main it uses 25-30, and if the menu.main does not have childern it uses lines 32-34. This exact same logic is used for the right side of the nav bar. Hugo loops through params.social variables defined in the config file and uses lines 42-46 to create the nescessary tags. 
 
-
-# Add sandstone theme into a theme
-# modify partials
-  # use old site header
-  # include files in header
-# modify layouts
-# add content
-# config file
+I think that just about covers everything, at least for in my case. This entire process took me about two months in total, so it is very possible that I may have forgotten about something. Also, it took so long because I really could not find any resources that were instructional for this particular kind of thing, and I also have had no experience with Hugo or Blogdown, so I was learning a bunch of different things all at the same time and trying to make them work together. Alas, I got it done. And since I wanted to conver my basic RMarkdown website to a Blogdown website then I figured that there most be somebody else out there that might want to do the same and find this helpful. 
